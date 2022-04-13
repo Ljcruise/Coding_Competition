@@ -30,20 +30,29 @@ def read_file():
                 invalid_data += 'L'
 
             try:
+                id_num = (int(id))
+                id_num >= 0
+
+            except:
+                invalid_data += 'I'
+
+            try:
                 last_name, first_name = full_name.split(',')
             except:
                 invalid_data += 'N'
 
             try:
                 email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(edu)'
-                (re.search(email_pattern, email))
+                re.search(email_pattern, email)
             except:
                 invalid_data += 'E'
 
             try:
                 phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
                 new_pattern = r'\1.\2.\3'
-                re.sub(phone_pattern, new_pattern)
+                new_phone_num = re.sub(phone_pattern, new_pattern, phone_num)
+                phone_num = new_phone_num
+
             except:
                 invalid_data += 'P'
 
@@ -51,10 +60,9 @@ def read_file():
 
             if invalid_data > '':
                 print(invalid_data)
-                f3.write(id)
-                f3.write(row)
+                f3.write(str(row) + '\n')
             else:
-                f2.write('test2')
+                f2.write(str(row) + '\n')
 
 
 def main():
