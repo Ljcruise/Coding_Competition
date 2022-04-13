@@ -12,9 +12,13 @@ __github__ = 'https://github.com/Ljcruise/Coding_Comp.git'
 
 import csv
 import re
+import sys
+
+valid_count = 0
+invalid_count = 0
 
 
-def read_file():
+def read_file(valid_count, invalid_count):
     with open('input_data.csv', 'r') as f1, open('valid_data.csv', 'w') as f2, open('invalid_data.csv', 'w') as f3:
         input_reader = csv.reader(f1, delimiter='|')
         valid_writer = csv.writer(f2)
@@ -52,7 +56,6 @@ def read_file():
                 new_pattern = r'\1.\2.\3'
                 new_phone_num = re.sub(phone_pattern, new_pattern, phone_num)
                 phone_num = new_phone_num
-
             except:
                 invalid_data += 'P'
 
@@ -61,8 +64,12 @@ def read_file():
             if invalid_data > '':
                 print(invalid_data)
                 f3.write(str(row) + '\n')
+                invalid_count += 1
             else:
                 f2.write(str(row) + '\n')
+                valid_count += 1
+
+        return valid_count, invalid_count
 
 
 def main():
@@ -73,7 +80,21 @@ def main():
     Returns:
         no value
     """
-    read_file()
+    try:
+        read_file(valid_count, invalid_count)
+    except FileNotFoundError as e:
+        print('FileNotFoundError:', e)
+        sys.exit()
+    except OSError as e:
+        print('OSError:', e)
+        sys.exit()
+    except Exception as e:
+        print(type(e), e)
+        sys.exit()
+    finally:
+        print()
+        print('Number of valid records: ' + str(valid_count))
+        print('Number of invalid records: ' + str(invalid_count))
 
 
 if __name__ == '__main__':
