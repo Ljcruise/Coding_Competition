@@ -13,28 +13,11 @@ __github__ = 'https://github.com/Ljcruise/Coding_Comp.git'
 import csv
 import re
 
-id = 0
-
 
 def data_input(contact_info):
     with open('input_data.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
         writer = csv.writer(f1, f2, delimiter='|')
         writer.writerows(contact_info)
-
-
-def add_contact_info(contact_info):
-    global id
-    id += 1
-    pattern = '(\d\d\d)(\d\d\d)(\d\d\d\d)'
-    new_pattern = r'\1.\2.\3'
-
-    #full_name = last_name.title() + ' , ' + first_name.title()
-
-    phone_num = input('Please enter your phone number: ')
-    new_phone_num = re.sub(pattern, new_pattern, phone_num)
-
-    data_input(contact_info)
-    read_file(contact_info)
 
 
 def read_file(contact_info):
@@ -62,6 +45,13 @@ def read_file(contact_info):
                 (re.search(email_pattern, email))
             except:
                 invalid_data += 'E'
+
+            phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
+            new_pattern = r'\1.\2.\3'
+            try:
+                re.sub(phone_pattern, new_pattern)
+            except:
+                invalid_data += 'P'
 
         return contact_info
 
