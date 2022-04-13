@@ -36,7 +36,6 @@ def read_file(valid_count, invalid_count):
             try:
                 id_num = (int(id))
                 id_num >= 0
-
             except:
                 invalid_data += 'I'
 
@@ -82,6 +81,7 @@ def main():
     """
     try:
         read_file(valid_count, invalid_count)
+
     except FileNotFoundError as e:
         print('FileNotFoundError:', e)
         sys.exit()
@@ -91,6 +91,7 @@ def main():
     except Exception as e:
         print(type(e), e)
         sys.exit()
+
     finally:
         print()
         print('Number of valid records: ' + str(valid_count))
