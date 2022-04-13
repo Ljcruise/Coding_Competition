@@ -14,46 +14,47 @@ import csv
 import re
 
 
-def data_input(contact_info):
-    with open('input_data.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
-        writer = csv.writer(f1, f2, delimiter='|')
-        writer.writerows(contact_info)
+def read_file():
+    with open('input_data.csv', 'r') as f1, open('valid_data.csv', 'w') as f2, open('invalid_data.csv', 'w') as f3:
+        input_reader = csv.reader(f1, delimiter='|')
+        valid_writer = csv.writer(f2)
+        invalid_writer = csv.writer(f3)
 
-
-def read_file(contact_info):
-    with open('input_data.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
-        reader = csv.reader(f1, delimiter='|')
-        #reader = csv.reader(f2)
-
-        for row in reader:
-            try:
-                id, full_name, email, phone_num = row
-
-            except:
-                print("Not enough information")
+        for row in input_reader:
 
             invalid_data = ''
 
             try:
-                last_name, first_name = full_name.split(', ')
+                id, full_name, email, phone_num = row
+            except:
+                invalid_data += 'L'
+
+            try:
+                last_name, first_name = full_name.split(',')
             except:
                 invalid_data += 'N'
 
-            email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(wsc)'
-
             try:
+                email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(edu)'
                 (re.search(email_pattern, email))
             except:
                 invalid_data += 'E'
 
-            phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
-            new_pattern = r'\1.\2.\3'
             try:
+                phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
+                new_pattern = r'\1.\2.\3'
                 re.sub(phone_pattern, new_pattern)
             except:
                 invalid_data += 'P'
 
-        return contact_info
+            print(row)
+
+            if invalid_data > '':
+                print(invalid_data)
+                f3.write(id)
+                f3.write(row)
+            else:
+                f2.write('test2')
 
 
 def main():
@@ -64,9 +65,7 @@ def main():
     Returns:
         no value
     """
-    contact_info = []
-    read_file(contact_info)
-    # add_contact_info(contact_info)
+    read_file()
 
 
 if __name__ == '__main__':
