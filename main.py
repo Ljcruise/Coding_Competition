@@ -17,7 +17,7 @@ id = 0
 
 
 def data_input(contact_info):
-    with open('input_file.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
+    with open('input_data.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
         writer = csv.writer(f1, f2, delimiter='|')
         writer.writerows(contact_info)
 
@@ -38,9 +38,9 @@ def add_contact_info(contact_info):
 
 
 def read_file(contact_info):
-    with open('input_file.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
+    with open('input_data.csv', 'r') as f1, open('input_file2.csv', 'r') as f2:
         reader = csv.reader(f1, delimiter='|')
-        reader = csv.reader(f2)
+        #reader = csv.reader(f2)
 
         for row in reader:
             try:
@@ -62,8 +62,6 @@ def read_file(contact_info):
                 (re.search(email_pattern, email))
             except:
                 invalid_data += 'E'
-
-
 
         return contact_info
 
