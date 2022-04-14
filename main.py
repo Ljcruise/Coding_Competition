@@ -34,9 +34,12 @@ def read_file():
                 id, full_name, email, phone_num = row
             except:
                 invalid_data += 'L'
+                invalid_writer.writerow([invalid_data, row])
+                invalid_count += 1
+                continue
 
             try:
-                id_num = (int(id))
+                id_num = int(id)
                 id_num >= 0
             except:
                 invalid_data += 'I'
@@ -46,30 +49,27 @@ def read_file():
             except:
                 invalid_data += 'N'
 
-            try:
-                email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(edu)'
-                re.search(email_pattern, email)
-            except:
+            email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(edu)'
+            m = re.search(email_pattern, email)
+            if m == None:
                 invalid_data += 'E'
 
-            try:
-                phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
-                new_pattern = r'\1.\2.\3'
-                new_phone_num = re.sub(phone_pattern, new_pattern, phone_num)
-                phone_num = new_phone_num
-            except:
+            phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
+            match = re.search(phone_pattern, phone_num)
+            if match == None:
                 invalid_data += 'P'
+            else:
+                new_pattern = r'\1.\2.\3'
+                phone_num = re.sub(phone_pattern, new_pattern, phone_num)
 
             print(row)
 
             if invalid_data > '':
                 print(invalid_data)
                 invalid_writer.writerow([invalid_data, row])
-                #f3.write(str(row) + '\n')
                 invalid_count += 1
             else:
                 valid_writer.writerow([row])
-                #f2.write(str(row) + '\n')
                 valid_count += 1
 
         return valid_count, invalid_count
