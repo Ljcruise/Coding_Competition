@@ -22,7 +22,7 @@ def read_file(valid_count, invalid_count):
     with open('input_data.csv', 'r') as f1, open('valid_data.csv', 'w') as f2, open('invalid_data.csv', 'w') as f3:
         input_reader = csv.reader(f1, delimiter='|')
         valid_writer = csv.writer(f2)
-        invalid_writer = csv.writer(f3)
+        invalid_writer = csv.writer(f3, delimiter='|')
 
         for row in input_reader:
 
@@ -62,10 +62,12 @@ def read_file(valid_count, invalid_count):
 
             if invalid_data > '':
                 print(invalid_data)
-                f3.write(str(row) + '\n')
+                invalid_writer.writerow([row])
+                #f3.write(str(row) + '\n')
                 invalid_count += 1
             else:
-                f2.write(str(row) + '\n')
+                valid_writer.writerow([row])
+                #f2.write(str(row) + '\n')
                 valid_count += 1
 
         return valid_count, invalid_count
