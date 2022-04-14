@@ -19,6 +19,10 @@ invalid_count = 0
 
 
 def read_file():
+    """
+    test
+    :return:
+    """
     global valid_count, invalid_count
     with open('input_data.csv', 'r', newline='') as f1, open('valid_data.csv', 'w', newline='') as f2, \
             open('invalid_data.csv', 'w', newline='') as f3:
