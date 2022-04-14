@@ -34,7 +34,8 @@ def read_file():
                 id, full_name, email, phone_num = row
             except:
                 invalid_data += 'L'
-                invalid_writer.writerow([invalid_data, id, full_name, email, phone_num])
+                row.insert(0, invalid_data)
+                invalid_writer.writerow(row)
                 invalid_count += 1
                 continue
 
@@ -61,14 +62,12 @@ def read_file():
             else:
                 new_phone_num = phone_num.replace('-', '.')
 
-            print(row)
-
             if invalid_data > '':
-                print(invalid_data)
-                invalid_writer.writerow([invalid_data, id, full_name, email, phone_num])
+                row.insert(0, invalid_data)
+                invalid_writer.writerow(row)
                 invalid_count += 1
             else:
-                valid_writer.writerow([id, full_name, email, new_phone_num])
+                valid_writer.writerow([id, first_name, last_name, email, new_phone_num])
                 valid_count += 1
 
         return valid_count, invalid_count
@@ -96,7 +95,6 @@ def main():
         sys.exit()
 
     finally:
-        print()
         print('Number of valid records: ' + str(valid_count))
         print('Number of invalid records: ' + str(invalid_count))
 
