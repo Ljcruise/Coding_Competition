@@ -20,7 +20,7 @@ invalid_count = 0
 
 def read_file():
     global valid_count, invalid_count
-    with open('input_data.csv', 'r', newline='') as f1, open('valid_data.csv', 'w', newline='') as f2,\
+    with open('input_data.csv', 'r', newline='') as f1, open('valid_data.csv', 'w', newline='') as f2, \
             open('invalid_data.csv', 'w', newline='') as f3:
         input_reader = csv.reader(f1, delimiter='|')
         valid_writer = csv.writer(f2)
@@ -34,7 +34,7 @@ def read_file():
                 id, full_name, email, phone_num = row
             except:
                 invalid_data += 'L'
-                invalid_writer.writerow([invalid_data, row])
+                invalid_writer.writerow([invalid_data, id, full_name, email, phone_num])
                 invalid_count += 1
                 continue
 
@@ -59,17 +59,16 @@ def read_file():
             if match == None:
                 invalid_data += 'P'
             else:
-                new_pattern = r'\1.\2.\3'
-                phone_num = re.sub(phone_pattern, new_pattern, phone_num)
+                new_phone_num = phone_num.replace('-', '.')
 
             print(row)
 
             if invalid_data > '':
                 print(invalid_data)
-                invalid_writer.writerow([invalid_data, row])
+                invalid_writer.writerow([invalid_data, id, full_name, email, phone_num])
                 invalid_count += 1
             else:
-                valid_writer.writerow([row])
+                valid_writer.writerow([id, full_name, email, new_phone_num])
                 valid_count += 1
 
         return valid_count, invalid_count
