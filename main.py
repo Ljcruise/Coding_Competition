@@ -18,8 +18,10 @@ valid_count = 0
 invalid_count = 0
 
 
-def read_file(valid_count, invalid_count):
-    with open('input_data.csv', 'r') as f1, open('valid_data.csv', 'w') as f2, open('invalid_data.csv', 'w') as f3:
+def read_file():
+    global valid_count, invalid_count
+    with open('input_data.csv', 'r', newline='') as f1, open('valid_data.csv', 'w', newline='') as f2,\
+            open('invalid_data.csv', 'w', newline='') as f3:
         input_reader = csv.reader(f1, delimiter='|')
         valid_writer = csv.writer(f2)
         invalid_writer = csv.writer(f3, delimiter='|')
@@ -62,7 +64,7 @@ def read_file(valid_count, invalid_count):
 
             if invalid_data > '':
                 print(invalid_data)
-                invalid_writer.writerow([row])
+                invalid_writer.writerow([invalid_data, row])
                 #f3.write(str(row) + '\n')
                 invalid_count += 1
             else:
@@ -82,7 +84,7 @@ def main():
         no value
     """
     try:
-        read_file(valid_count, invalid_count)
+        read_file()
 
     except FileNotFoundError as e:
         print('FileNotFoundError:', e)
