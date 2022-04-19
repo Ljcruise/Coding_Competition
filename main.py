@@ -32,21 +32,23 @@ def read_file():
         invalid_count (int): The number of invalid records
     """
     global valid_count, invalid_count
+
     with open('input_data.csv', 'r', newline='') as f1, open('valid_data.csv', 'w', newline='') as f2, \
             open('invalid_data.csv', 'w', newline='') as f3:
-        input_reader = csv.reader(f1, delimiter='|')   # change the delimiter for the input reader
-        valid_writer = csv.writer(f2)   # default delimiter is comma delimited for the valid writer
-        invalid_writer = csv.writer(f3, delimiter='|')   # change the delimiter for the invalid writer
+
+        input_reader = csv.reader(f1, delimiter='|')  # change the delimiter for the input reader
+        valid_writer = csv.writer(f2)  # default delimiter is comma delimited for the valid writer
+        invalid_writer = csv.writer(f3, delimiter='|')  # change the delimiter for the invalid writer
 
         for row in input_reader:
 
-            invalid_data = ''   # set invalid data to a blank string to add to throughout validation
+            invalid_data = ''  # set invalid data to a blank string to add to throughout validation
 
             try:
-                id, full_name, email, phone_num = row   # unpack row
+                id, full_name, email, phone_num = row  # unpack row
             # write to invalid file L followed by the row, add one to invalid count
             except:
-                invalid_data += 'L'   # L is invalid record length
+                invalid_data += 'L'  # L is invalid record length
                 row.insert(0, invalid_data)
                 invalid_writer.writerow(row)
                 invalid_count += 1
@@ -57,38 +59,38 @@ def read_file():
                 id_num = int(id)
                 id_num >= 0
             except:
-                invalid_data += 'I'   # I is invalid ID
+                invalid_data += 'I'  # I is invalid ID
 
             # use the split function to get first and last name
             try:
                 last_name, first_name = full_name.split(',')
             except:
-                invalid_data += 'N'   # N is invalid name
+                invalid_data += 'N'  # N is invalid name
 
             # use a regex expression to validate email
             email_pattern = '[a-zA-Z0-9]+@[a-zA-Z]+\.(edu)'
             m = re.search(email_pattern, email)
             if m == None:
-                invalid_data += 'E'   # E is invalid email
+                invalid_data += 'E'  # E is invalid email
 
             # use a regex expression to validate phone number format
             phone_pattern = '(\d\d\d)-(\d\d\d)-(\d\d\d\d)'
             match = re.search(phone_pattern, phone_num)
             if match == None:
-                invalid_data += 'P'   # P is invalid phone number
+                invalid_data += 'P'  # P is invalid phone number
             # replace the dashed with periods for valid phone numbers only
             else:
                 new_phone_num = phone_num.replace('-', '.')
 
             # check if the invalid data is more than a blank string
             if invalid_data > '':
-                row.insert(0, invalid_data)   # insert invalid data at the beginning of the row list
-                invalid_writer.writerow(row)   # write one row at a time to the invalid data file
-                invalid_count += 1   # add one to invalid count
+                row.insert(0, invalid_data)  # insert invalid data at the beginning of the row list
+                invalid_writer.writerow(row)  # write one row at a time to the invalid data file
+                invalid_count += 1  # add one to invalid count
             else:
                 # write one row at a time to the valid data file
                 valid_writer.writerow([id, first_name, last_name, email, new_phone_num])
-                valid_count += 1   # add one to valid count
+                valid_count += 1  # add one to valid count
 
         return valid_count, invalid_count
 
